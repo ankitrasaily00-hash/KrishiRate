@@ -1,0 +1,464 @@
+{% extends "base.html" %}
+
+{% block title %}
+    KrishiRate — Nepal Agriculture Price Intelligence
+{% endblock %}
+
+
+{% block content %}
+
+<section class="home-page" data-dashboard>
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero-section">
+
+        <div class="container hero-container">
+
+            <div class="hero-copy">
+
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Nepal Agriculture Intelligence
+                </div>
+
+                <h1>
+                    Know the market.
+                    <span>Track the price.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Explore the latest agricultural prices across
+                    Nepal's markets, backed by trusted data sources.
+                </p>
+
+
+                <!-- SEARCH -->
+
+                <form
+                    class="hero-search"
+                    action="/products"
+                    method="GET"
+                >
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search tomatoes, rice, vegetables..."
+                        autocomplete="off"
+                    >
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                </form>
+
+                <div class="search-hint">
+                    Search by product name, Nepali name, or commodity code.
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HERO STATUS CARD
+            ================================================== -->
+
+            <div class="hero-card">
+
+                <div class="hero-card-top">
+
+                    <span class="hero-card-label">
+                        MARKET STATUS
+                    </span>
+
+                    <span class="live-badge">
+                        <span></span>
+                        LIVE
+                    </span>
+
+                </div>
+
+                <div class="hero-card-value">
+                    Today's Prices
+                </div>
+
+                <p>
+                    Latest available agricultural market
+                    information from Nepal.
+                </p>
+
+                <div class="hero-card-footer">
+
+                    <span>
+                        Source
+                    </span>
+
+                    <strong data-source-name>
+                        Loading...
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         QUICK STATS
+    ====================================================== -->
+
+    <section class="stats-section">
+
+        <div class="container stats-grid">
+
+
+            <!-- MARKETS -->
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    ◉
+                </div>
+
+                <div class="stat-content">
+
+                    <span class="stat-label">
+                        Active Markets
+                    </span>
+
+                    <strong
+                        class="stat-value"
+                        data-stat="markets"
+                    >
+                        —
+                    </strong>
+
+                    <span class="stat-note">
+                        Across Nepal
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCTS -->
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    ◈
+                </div>
+
+                <div class="stat-content">
+
+                    <span class="stat-label">
+                        Commodities
+                    </span>
+
+                    <strong
+                        class="stat-value"
+                        data-stat="products"
+                    >
+                        —
+                    </strong>
+
+                    <span class="stat-note">
+                        Active catalog
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRICE RECORDS -->
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    ₨
+                </div>
+
+                <div class="stat-content">
+
+                    <span class="stat-label">
+                        Price Records
+                    </span>
+
+                    <strong
+                        class="stat-value"
+                        data-stat="records"
+                    >
+                        —
+                    </strong>
+
+                    <span class="stat-note">
+                        Stored in KrishiRate
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- DATA STATUS -->
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+                <div class="stat-content">
+
+                    <span class="stat-label">
+                        Latest Data
+                    </span>
+
+                    <strong
+                        class="stat-value status-live"
+                        data-stat="date"
+                    >
+                        —
+                    </strong>
+
+                    <span class="stat-note">
+                        Latest available price date
+                    </span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MARKET SNAPSHOT
+    ====================================================== -->
+
+    <section class="market-section">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        TODAY'S MARKET
+                    </span>
+
+                    <h2>
+                        Latest agricultural prices
+                    </h2>
+
+                    <p>
+                        Explore current prices collected from
+                        agricultural markets across Nepal.
+                    </p>
+
+                </div>
+
+                <a
+                    href="/markets"
+                    class="section-link"
+                >
+                    View all markets
+                    <span>→</span>
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 MARKET TABLE
+            ================================================== -->
+
+            <div class="market-table-wrapper">
+
+                <table class="market-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Market
+                            </th>
+
+                            <th>
+                                Minimum
+                            </th>
+
+                            <th>
+                                Average
+                            </th>
+
+                            <th>
+                                Maximum
+                            </th>
+
+                            <th>
+                                Unit
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody data-latest-prices>
+
+                        <!-- Loading state -->
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="table-empty"
+                            >
+                                Loading latest market prices...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DATA TRUST
+    ====================================================== -->
+
+    <section class="trust-section">
+
+        <div class="container trust-container">
+
+
+            <!-- COPY -->
+
+            <div class="trust-copy">
+
+                <span class="section-eyebrow">
+                    DATA YOU CAN TRACE
+                </span>
+
+                <h2>
+                    Transparent agricultural intelligence.
+                </h2>
+
+                <p>
+                    Every price in KrishiRate keeps its original
+                    source, market, collection date, and reference.
+                    No mystery numbers.
+                </p>
+
+            </div>
+
+
+            <!-- POINTS -->
+
+            <div class="trust-points">
+
+
+                <div class="trust-point">
+
+                    <span class="trust-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Source attributed
+                        </strong>
+
+                        <p>
+                            Know exactly where every price came from.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-point">
+
+                    <span class="trust-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Market specific
+                        </strong>
+
+                        <p>
+                            Compare agricultural prices across markets.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-point">
+
+                    <span class="trust-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Historical context
+                        </strong>
+
+                        <p>
+                            Track prices beyond today's number.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}

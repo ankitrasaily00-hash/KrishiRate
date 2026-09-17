@@ -1,0 +1,2125 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Price Intelligence — KrishiRate
+{% endblock %}
+
+{% block content %}
+
+<section class="prices-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="prices-hero">
+
+        <div class="container">
+
+            <div class="prices-hero-content">
+
+                <div class="section-eyebrow">
+                    PRICE INTELLIGENCE
+                </div>
+
+                <h1>
+                    Nepal's
+                    <span>market prices.</span>
+                </h1>
+
+                <p>
+                    Explore the latest agricultural commodity prices
+                    across Nepal's major markets, with source,
+                    freshness, and market-level context.
+                </p>
+
+                <div class="prices-controls">
+
+                    <div class="prices-search">
+
+                        <span class="prices-search-icon">
+                            ⌕
+                        </span>
+
+                        <input
+                            id="priceProductSearch"
+                            type="text"
+                            placeholder="Search tomato, potato, onion..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            id="priceSearchClear"
+                            class="prices-search-clear"
+                            type="button"
+                            aria-label="Clear search"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                    <div class="prices-filter">
+
+                        <label for="marketFilter">
+                            Market
+                        </label>
+
+                        <select id="marketFilter">
+
+                            <option value="">
+                                All markets
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="prices-filter">
+
+                        <label for="freshnessFilter">
+                            Freshness
+                        </label>
+
+                        <select id="freshnessFilter">
+
+                            <option value="">
+                                All data
+                            </option>
+
+                            <option value="LIVE">
+                                Live
+                            </option>
+
+                            <option value="RECENT">
+                                Recent
+                            </option>
+
+                            <option value="STALE">
+                                Stale
+                            </option>
+
+                            <option value="HISTORICAL">
+                                Historical
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRICE DIRECTORY
+         ===================================================== -->
+
+    <section class="prices-directory">
+
+        <div class="container">
+
+            <div class="prices-directory-header">
+
+                <div>
+
+                    <div class="section-eyebrow">
+                        LATEST DATA
+                    </div>
+
+                    <h2>
+                        Agricultural prices
+                    </h2>
+
+                    <p class="prices-directory-description">
+                        Latest available market prices from
+                        KrishiRate's connected sources.
+                    </p>
+
+                </div>
+
+                <div class="prices-directory-meta">
+
+                    <span id="pricesResultCount">
+                        0 prices
+                    </span>
+
+                    <span class="prices-updated">
+
+                        Updated
+
+                        <strong id="pricesUpdatedAt">
+                            —
+                        </strong>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOADING
+                 ================================================= -->
+
+            <div
+                id="pricesLoading"
+                class="prices-loading"
+            >
+
+                <div class="prices-loading-spinner"></div>
+
+                <span>
+                    Loading latest agricultural prices...
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 ERROR
+                 ================================================= -->
+
+            <div
+                id="pricesError"
+                class="prices-error"
+                hidden
+            >
+
+                <div class="prices-error-icon">
+                    !
+                </div>
+
+                <h3>
+                    Price data unavailable
+                </h3>
+
+                <p id="pricesErrorMessage">
+                    We couldn't load the latest price data.
+                </p>
+
+                <button
+                    id="pricesRetry"
+                    type="button"
+                >
+                    Try again
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 EMPTY
+                 ================================================= -->
+
+            <div
+                id="pricesEmpty"
+                class="prices-empty"
+                hidden
+            >
+
+                <div class="prices-empty-icon">
+                    ⌕
+                </div>
+
+                <h3>
+                    No prices found
+                </h3>
+
+                <p>
+                    Try a different product, market, or
+                    freshness filter.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 PRICE TABLE
+                 ================================================= -->
+
+            <div
+                id="pricesTableWrapper"
+                class="prices-table-wrapper"
+                hidden
+            >
+
+                <div class="prices-table">
+
+                    <div class="prices-table-head">
+
+                        <div>
+                            Product
+                        </div>
+
+                        <div>
+                            Market
+                        </div>
+
+                        <div>
+                            Minimum
+                        </div>
+
+                        <div>
+                            Average
+                        </div>
+
+                        <div>
+                            Maximum
+                        </div>
+
+                        <div>
+                            Date
+                        </div>
+
+                        <div>
+                            Status
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="pricesTableBody"
+                        class="prices-table-body"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MOBILE PRICE LIST
+                 ================================================= -->
+
+            <div
+                id="pricesMobileList"
+                class="prices-mobile-list"
+                hidden
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRICE DETAIL DRAWER
+         ===================================================== -->
+
+    <div
+        id="priceOverlay"
+        class="price-overlay"
+        hidden
+    ></div>
+
+
+    <aside
+        id="priceDrawer"
+        class="price-drawer"
+        aria-hidden="true"
+    >
+
+        <div class="price-drawer-header">
+
+            <div class="price-drawer-heading">
+
+                <div class="price-drawer-eyebrow">
+                    PRICE DETAIL
+                </div>
+
+                <h2 id="drawerProductName">
+                    —
+                </h2>
+
+                <p id="drawerProductSubtitle">
+                    —
+                </p>
+
+            </div>
+
+            <button
+                id="priceDrawerClose"
+                class="price-drawer-close"
+                type="button"
+                aria-label="Close price details"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY
+             ================================================= -->
+
+        <div
+            id="drawerSummary"
+            class="price-drawer-summary"
+        ></div>
+
+
+        <!-- =================================================
+             MARKET BREAKDOWN
+             ================================================= -->
+
+        <section class="price-drawer-section">
+
+            <div class="price-drawer-section-heading">
+
+                <div>
+
+                    <div class="section-eyebrow">
+                        MARKET BREAKDOWN
+                    </div>
+
+                    <h3>
+                        Current market prices
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <div
+                id="drawerMarkets"
+                class="price-drawer-markets"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             SOURCE
+             ================================================= -->
+
+        <div
+            id="drawerSource"
+            class="price-drawer-source"
+        ></div>
+
+    </aside>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    /* =====================================================
+       STATE
+       ===================================================== */
+
+    const state = {
+
+        markets: [],
+
+        prices: [],
+
+        filteredPrices: [],
+
+        selectedProduct: null,
+
+        searchTimer: null
+
+    };
+
+
+    /* =====================================================
+       DOM
+       ===================================================== */
+
+    const productSearch =
+        document.getElementById(
+            "priceProductSearch"
+        );
+
+    const searchClear =
+        document.getElementById(
+            "priceSearchClear"
+        );
+
+    const marketFilter =
+        document.getElementById(
+            "marketFilter"
+        );
+
+    const freshnessFilter =
+        document.getElementById(
+            "freshnessFilter"
+        );
+
+    const loading =
+        document.getElementById(
+            "pricesLoading"
+        );
+
+    const error =
+        document.getElementById(
+            "pricesError"
+        );
+
+    const errorMessage =
+        document.getElementById(
+            "pricesErrorMessage"
+        );
+
+    const empty =
+        document.getElementById(
+            "pricesEmpty"
+        );
+
+    const tableWrapper =
+        document.getElementById(
+            "pricesTableWrapper"
+        );
+
+    const tableBody =
+        document.getElementById(
+            "pricesTableBody"
+        );
+
+    const mobileList =
+        document.getElementById(
+            "pricesMobileList"
+        );
+
+    const resultCount =
+        document.getElementById(
+            "pricesResultCount"
+        );
+
+    const updatedAt =
+        document.getElementById(
+            "pricesUpdatedAt"
+        );
+
+    const retry =
+        document.getElementById(
+            "pricesRetry"
+        );
+
+    const overlay =
+        document.getElementById(
+            "priceOverlay"
+        );
+
+    const drawer =
+        document.getElementById(
+            "priceDrawer"
+        );
+
+    const drawerClose =
+        document.getElementById(
+            "priceDrawerClose"
+        );
+
+    const drawerProductName =
+        document.getElementById(
+            "drawerProductName"
+        );
+
+    const drawerProductSubtitle =
+        document.getElementById(
+            "drawerProductSubtitle"
+        );
+
+    const drawerSummary =
+        document.getElementById(
+            "drawerSummary"
+        );
+
+    const drawerMarkets =
+        document.getElementById(
+            "drawerMarkets"
+        );
+
+    const drawerSource =
+        document.getElementById(
+            "drawerSource"
+        );
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function formatNumber(value) {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return "—";
+        }
+
+        const number =
+            Number(value);
+
+        if (Number.isNaN(number)) {
+            return escapeHtml(value);
+        }
+
+        return new Intl.NumberFormat(
+            "en-US",
+            {
+                maximumFractionDigits: 2
+            }
+        ).format(number);
+    }
+
+
+    function formatPrice(
+        value,
+        unit
+    ) {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return "—";
+        }
+
+        return `
+            ${formatNumber(value)}
+            <span class="price-unit">
+                ${escapeHtml(unit || "")}
+            </span>
+        `;
+    }
+
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        const date =
+            new Date(value);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return escapeHtml(value);
+        }
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    function formatDateTime(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        const date =
+            new Date(value);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return escapeHtml(value);
+        }
+
+        return date.toLocaleString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+    }
+
+
+    function freshnessClass(value) {
+
+        return String(
+            value || "UNKNOWN"
+        ).toLowerCase();
+    }
+
+
+    function freshnessLabel(value) {
+
+        if (!value) {
+            return "Unknown";
+        }
+
+        const text =
+            String(value);
+
+        return (
+            text.charAt(0).toUpperCase() +
+            text.slice(1).toLowerCase()
+        );
+    }
+
+
+    /* =====================================================
+       UI STATE
+       ===================================================== */
+
+    function showLoading() {
+
+        loading.style.display =
+            "flex";
+
+        error.style.display =
+            "none";
+
+        empty.style.display =
+            "none";
+
+        tableWrapper.style.display =
+            "none";
+
+        mobileList.style.display =
+            "none";
+    }
+
+
+    function showError(message) {
+
+        loading.style.display =
+            "none";
+
+        error.style.display =
+            "flex";
+
+        empty.style.display =
+            "none";
+
+        tableWrapper.style.display =
+            "none";
+
+        mobileList.style.display =
+            "none";
+
+        errorMessage.textContent =
+            message ||
+            "We couldn't load the latest price data.";
+    }
+
+
+    function showEmpty() {
+
+        loading.style.display =
+            "none";
+
+        error.style.display =
+            "none";
+
+        empty.style.display =
+            "flex";
+
+        tableWrapper.style.display =
+            "none";
+
+        mobileList.style.display =
+            "none";
+    }
+
+
+    function showResults() {
+
+        loading.style.display =
+            "none";
+
+        error.style.display =
+            "none";
+
+        empty.style.display =
+            "none";
+
+        tableWrapper.style.display =
+            "block";
+
+        mobileList.style.display =
+            "none";
+    }
+
+
+    /* =====================================================
+       LOAD MARKETS
+       ===================================================== */
+
+    async function loadMarkets() {
+
+        const response =
+            await fetch(
+                "/api/markets",
+                {
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Unable to load markets (${response.status}).`
+            );
+        }
+
+        const data =
+            await response.json();
+
+        if (
+            !data ||
+            data.success === false
+        ) {
+
+            throw new Error(
+                data?.error ||
+                data?.message ||
+                "Unable to load markets."
+            );
+        }
+
+        state.markets =
+            Array.isArray(
+                data.markets
+            )
+                ? data.markets
+                : [];
+
+        renderMarketFilter();
+    }
+
+
+    function renderMarketFilter() {
+
+        const currentValue =
+            marketFilter.value;
+
+        marketFilter.innerHTML = `
+            <option value="">
+                All markets
+            </option>
+        `;
+
+        state.markets.forEach(
+            function (market) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    String(market.id);
+
+                option.textContent =
+                    market.name ||
+                    market.nepali_name ||
+                    "Unknown market";
+
+                marketFilter.appendChild(
+                    option
+                );
+            }
+        );
+
+        if (
+            currentValue &&
+            state.markets.some(
+                function (market) {
+
+                    return (
+                        String(market.id) ===
+                        currentValue
+                    );
+
+                }
+            )
+        ) {
+
+            marketFilter.value =
+                currentValue;
+        }
+    }
+
+
+    /* =====================================================
+       LOAD CURRENT PRICES
+       ===================================================== */
+
+    async function loadPrices() {
+
+        showLoading();
+
+        try {
+
+            await loadMarkets();
+
+
+            const response =
+                await fetch(
+                    "/api/prices/latest",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Unable to load latest prices (${response.status}).`
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data ||
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data?.error ||
+                    data?.message ||
+                    "Unable to load latest prices."
+                );
+            }
+
+
+            state.prices =
+                Array.isArray(
+                    data.prices
+                )
+                    ? data.prices
+                    : [];
+
+
+            applyFilters();
+
+
+            updateUpdatedAt();
+
+
+        } catch (loadError) {
+
+            console.error(
+                "KrishiRate price load failed:",
+                loadError
+            );
+
+            showError(
+                loadError.message ||
+                "We couldn't load the latest price data."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FILTERS
+       ===================================================== */
+
+    function applyFilters() {
+
+        const search =
+            productSearch.value
+                .trim()
+                .toLowerCase();
+
+        const market =
+            marketFilter.value;
+
+        const freshness =
+            freshnessFilter.value;
+
+
+        state.filteredPrices =
+            state.prices.filter(
+                function (price) {
+
+                    const productText = [
+
+                        price.product,
+
+                        price.nepali_name,
+
+                        price.english_name,
+
+                        price.category,
+
+                        price.subcategory,
+
+                        price.variety,
+
+                        price.aliases
+
+                    ]
+                        .filter(Boolean)
+                        .join(" ")
+                        .toLowerCase();
+
+
+                    const productMatch =
+                        !search ||
+                        productText.includes(
+                            search
+                        );
+
+
+                    const marketMatch =
+                        !market ||
+                        String(
+                            price.market_id
+                        ) === String(
+                            market
+                        );
+
+
+                    const freshnessMatch =
+                        !freshness ||
+                        String(
+                            price.freshness
+                        ).toUpperCase() ===
+                        String(
+                            freshness
+                        ).toUpperCase();
+
+
+                    return (
+                        productMatch &&
+                        marketMatch &&
+                        freshnessMatch
+                    );
+
+                }
+            );
+
+
+        renderPrices();
+    }
+
+
+    /* =====================================================
+       RENDER PRICES
+       ===================================================== */
+
+    function renderPrices() {
+
+        const total =
+            state.filteredPrices.length;
+
+
+        resultCount.textContent =
+            `${total} ${
+                total === 1
+                    ? "price"
+                    : "prices"
+            }`;
+
+
+        if (total === 0) {
+
+            showEmpty();
+
+            return;
+        }
+
+
+        renderTable();
+
+        renderMobileList();
+
+        showResults();
+    }
+
+
+    /* =====================================================
+       TABLE
+       ===================================================== */
+
+    function renderTable() {
+
+        tableBody.innerHTML = "";
+
+
+        state.filteredPrices.forEach(
+            function (price, index) {
+
+                const row =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                row.type =
+                    "button";
+
+
+                row.className =
+                    "prices-table-row";
+
+
+                row.style.setProperty(
+                    "--row-index",
+                    index
+                );
+
+
+                row.innerHTML = `
+
+                    <div class="price-product-cell">
+
+                        <strong>
+                            ${escapeHtml(
+                                price.product ||
+                                price.nepali_name ||
+                                "Unknown product"
+                            )}
+                        </strong>
+
+                        ${
+                            price.english_name
+                                ? `
+                                    <span>
+                                        ${escapeHtml(
+                                            price.english_name
+                                        )}
+                                    </span>
+                                  `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    <div class="price-market-cell">
+
+                        <strong>
+                            ${escapeHtml(
+                                price.market ||
+                                "—"
+                            )}
+                        </strong>
+
+                        ${
+                            price.district
+                                ? `
+                                    <span>
+                                        ${escapeHtml(
+                                            price.district
+                                        )}
+                                    </span>
+                                  `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    <div class="price-value-cell">
+
+                        ${formatPrice(
+                            price.minimum,
+                            price.unit
+                        )}
+
+                    </div>
+
+
+                    <div class="price-value-cell average">
+
+                        ${formatPrice(
+                            price.average,
+                            price.unit
+                        )}
+
+                    </div>
+
+
+                    <div class="price-value-cell">
+
+                        ${formatPrice(
+                            price.maximum,
+                            price.unit
+                        )}
+
+                    </div>
+
+
+                    <div class="price-date-cell">
+
+                        ${formatDate(
+                            price.price_date
+                        )}
+
+                    </div>
+
+
+                    <div class="price-status-cell">
+
+                        <span
+                            class="
+                                price-freshness
+                                ${freshnessClass(
+                                    price.freshness
+                                )}
+                            "
+                        >
+                            ${freshnessLabel(
+                                price.freshness
+                            )}
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                row.addEventListener(
+                    "click",
+                    function () {
+
+                        openPriceDetail(
+                            price
+                        );
+
+                    }
+                );
+
+
+                tableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    function renderMobileList() {
+
+        mobileList.innerHTML = "";
+
+
+        state.filteredPrices.forEach(
+            function (price) {
+
+                const card =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                card.type =
+                    "button";
+
+
+                card.className =
+                    "price-mobile-card";
+
+
+                card.innerHTML = `
+
+                    <div class="price-mobile-top">
+
+                        <div>
+
+                            <strong>
+                                ${escapeHtml(
+                                    price.product ||
+                                    price.nepali_name ||
+                                    "Unknown"
+                                )}
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    price.market ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <span
+                            class="
+                                price-freshness
+                                ${freshnessClass(
+                                    price.freshness
+                                )}
+                            "
+                        >
+                            ${freshnessLabel(
+                                price.freshness
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="price-mobile-values">
+
+                        <div>
+
+                            <span>
+                                Min
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    price.minimum,
+                                    price.unit
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="average">
+
+                            <span>
+                                Average
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    price.average,
+                                    price.unit
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Max
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    price.maximum,
+                                    price.unit
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="price-mobile-footer">
+
+                        <span>
+                            ${formatDate(
+                                price.price_date
+                            )}
+                        </span>
+
+                        <span>
+                            View details →
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                card.addEventListener(
+                    "click",
+                    function () {
+
+                        openPriceDetail(
+                            price
+                        );
+
+                    }
+                );
+
+
+                mobileList.appendChild(
+                    card
+                );
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       PRICE DETAIL
+       ===================================================== */
+
+    async function openPriceDetail(
+        price
+    ) {
+
+        state.selectedProduct =
+            price;
+
+
+        drawerProductName.textContent =
+            price.product ||
+            price.nepali_name ||
+            "Agricultural product";
+
+
+        drawerProductSubtitle.textContent =
+            [
+                price.category,
+
+                price.unit
+                    ? `Unit: ${price.unit}`
+                    : null
+
+            ]
+                .filter(Boolean)
+                .join(" • ");
+
+
+        drawerSummary.innerHTML = `
+
+            <div class="price-summary-card">
+
+                <span>
+                    Minimum
+                </span>
+
+                <strong>
+                    ${formatPrice(
+                        price.minimum,
+                        price.unit
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="price-summary-card average">
+
+                <span>
+                    Average
+                </span>
+
+                <strong>
+                    ${formatPrice(
+                        price.average,
+                        price.unit
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="price-summary-card">
+
+                <span>
+                    Maximum
+                </span>
+
+                <strong>
+                    ${formatPrice(
+                        price.maximum,
+                        price.unit
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+
+        drawerMarkets.innerHTML = `
+
+            <div class="price-detail-loading">
+                Loading market prices...
+            </div>
+
+        `;
+
+
+        drawerSource.innerHTML =
+            "";
+
+
+        overlay.style.display =
+            "block";
+
+
+        requestAnimationFrame(
+            function () {
+
+                overlay.classList.add(
+                    "is-visible"
+                );
+
+                drawer.classList.add(
+                    "is-open"
+                );
+
+                drawer.setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+                document.body.classList.add(
+                    "drawer-open"
+                );
+
+            }
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/products/${price.product_id}`,
+                    {
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load product details."
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data ||
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data?.error ||
+                    data?.message ||
+                    "Unable to load product details."
+                );
+            }
+
+
+            renderDrawerDetails(
+                data
+            );
+
+
+        } catch (detailError) {
+
+            drawerMarkets.innerHTML = `
+
+                <div class="price-detail-error">
+
+                    ${escapeHtml(
+                        detailError.message
+                    )}
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    function renderDrawerDetails(
+        data
+    ) {
+
+        const statistics =
+            data.statistics || {};
+
+        const markets =
+            Array.isArray(
+                data.markets
+            )
+                ? data.markets
+                : [];
+
+        const product =
+            data.product || {};
+
+
+        const unit =
+            statistics.unit ||
+            product.unit ||
+            state.selectedProduct?.unit ||
+            "";
+
+
+        drawerProductName.textContent =
+            product.name ||
+            state.selectedProduct?.product ||
+            "Agricultural product";
+
+
+        drawerProductSubtitle.textContent =
+            [
+                product.english_name,
+
+                unit
+                    ? `Unit: ${unit}`
+                    : null
+
+            ]
+                .filter(Boolean)
+                .join(" • ");
+
+
+        drawerSummary.innerHTML = `
+
+            <div class="price-summary-card">
+
+                <span>
+                    Minimum
+                </span>
+
+                <strong>
+                    ${formatPrice(
+                        statistics.minimum_price,
+                        unit
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="price-summary-card average">
+
+                <span>
+                    Average
+                </span>
+
+                <strong>
+                    ${formatPrice(
+                        statistics.average_price,
+                        unit
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="price-summary-card">
+
+                <span>
+                    Maximum
+                </span>
+
+                <strong>
+                    ${formatPrice(
+                        statistics.maximum_price,
+                        unit
+                    )}
+                </strong>
+
+            </div>
+
+        `;
+
+
+        if (!markets.length) {
+
+            drawerMarkets.innerHTML = `
+
+                <div class="price-detail-empty">
+
+                    No current market prices available.
+
+                </div>
+
+            `;
+
+        } else {
+
+            drawerMarkets.innerHTML =
+                markets
+                    .map(
+                        function (market) {
+
+                            return `
+
+                                <div class="price-detail-market">
+
+                                    <div class="price-detail-market-header">
+
+                                        <div>
+
+                                            <strong>
+                                                ${escapeHtml(
+                                                    market.market ||
+                                                    "Unknown market"
+                                                )}
+                                            </strong>
+
+                                            ${
+                                                market.district
+                                                    ? `
+                                                        <span>
+                                                            ${escapeHtml(
+                                                                market.district
+                                                            )}
+                                                        </span>
+                                                      `
+                                                    : ""
+                                            }
+
+                                        </div>
+
+
+                                        <span
+                                            class="
+                                                price-freshness
+                                                ${freshnessClass(
+                                                    market.freshness
+                                                )}
+                                            "
+                                        >
+                                            ${freshnessLabel(
+                                                market.freshness
+                                            )}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="price-detail-market-values">
+
+                                        <div>
+
+                                            <span>
+                                                Min
+                                            </span>
+
+                                            <strong>
+                                                ${formatPrice(
+                                                    market.minimum,
+                                                    market.unit ||
+                                                    unit
+                                                )}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="average">
+
+                                            <span>
+                                                Avg
+                                            </span>
+
+                                            <strong>
+                                                ${formatPrice(
+                                                    market.average,
+                                                    market.unit ||
+                                                    unit
+                                                )}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <span>
+                                                Max
+                                            </span>
+
+                                            <strong>
+                                                ${formatPrice(
+                                                    market.maximum,
+                                                    market.unit ||
+                                                    unit
+                                                )}
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="price-detail-market-footer">
+
+                                        <span>
+                                            ${formatDate(
+                                                market.price_date
+                                            )}
+                                        </span>
+
+                                        ${
+                                            market.province
+                                                ? `
+                                                    <span>
+                                                        ${escapeHtml(
+                                                            market.province
+                                                        )}
+                                                    </span>
+                                                  `
+                                                : ""
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
+        }
+
+
+        const source =
+            markets.find(
+                function (market) {
+                    return Boolean(
+                        market.source
+                    );
+                }
+            );
+
+
+        if (source) {
+
+            drawerSource.innerHTML = `
+
+                <div class="price-source-label">
+                    DATA SOURCE
+                </div>
+
+                <strong>
+                    ${escapeHtml(
+                        source.source
+                    )}
+                </strong>
+
+                ${
+                    source.source_url
+                        ? `
+                            <a
+                                href="${escapeHtml(
+                                    source.source_url
+                                )}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open source →
+                            </a>
+                          `
+                        : ""
+                }
+
+            `;
+
+        } else {
+
+            drawerSource.innerHTML = `
+                <div class="price-source-label">
+                    DATA SOURCE
+                </div>
+
+                <strong>
+                    Source attributed
+                </strong>
+            `;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CLOSE DRAWER
+       ===================================================== */
+
+    function closeDrawer() {
+
+        drawer.classList.remove(
+            "is-open"
+        );
+
+        overlay.classList.remove(
+            "is-visible"
+        );
+
+        drawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.classList.remove(
+            "drawer-open"
+        );
+
+
+        setTimeout(
+            function () {
+
+                if (
+                    !drawer.classList.contains(
+                        "is-open"
+                    )
+                ) {
+
+                    overlay.style.display =
+                        "none";
+
+                }
+
+            },
+            280
+        );
+
+    }
+
+
+    /* =====================================================
+       UPDATED TIME
+       ===================================================== */
+
+    function updateUpdatedAt() {
+
+        if (!state.prices.length) {
+
+            updatedAt.textContent =
+                "—";
+
+            return;
+        }
+
+
+        const latest =
+            state.prices.reduce(
+                function (
+                    newest,
+                    current
+                ) {
+
+                    const currentDate =
+                        new Date(
+                            current.collected_at ||
+                            current.price_date ||
+                            0
+                        );
+
+                    const newestDate =
+                        new Date(
+                            newest.collected_at ||
+                            newest.price_date ||
+                            0
+                        );
+
+
+                    return (
+                        currentDate >
+                        newestDate
+                    )
+                        ? current
+                        : newest;
+
+                }
+            );
+
+
+        updatedAt.textContent =
+            formatDateTime(
+                latest.collected_at ||
+                latest.price_date
+            );
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    productSearch.addEventListener(
+        "input",
+        function () {
+
+            searchClear.classList.toggle(
+                "is-visible",
+                Boolean(
+                    productSearch.value.trim()
+                )
+            );
+
+
+            clearTimeout(
+                state.searchTimer
+            );
+
+
+            state.searchTimer =
+                setTimeout(
+                    function () {
+
+                        applyFilters();
+
+                    },
+                    180
+                );
+
+        }
+    );
+
+
+    searchClear.addEventListener(
+        "click",
+        function () {
+
+            productSearch.value =
+                "";
+
+            searchClear.classList.remove(
+                "is-visible"
+            );
+
+            applyFilters();
+
+            productSearch.focus();
+
+        }
+    );
+
+
+    marketFilter.addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+    freshnessFilter.addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+    retry.addEventListener(
+        "click",
+        loadPrices
+    );
+
+
+    drawerClose.addEventListener(
+        "click",
+        closeDrawer
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        closeDrawer
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                drawer.classList.contains(
+                    "is-open"
+                )
+            ) {
+
+                closeDrawer();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL LOAD
+       ===================================================== */
+
+    loadPrices();
+
+})();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1424 @@
+{% extends "base.html" %}
+
+{% block title %}
+    KrishiRate — Agricultural Markets
+{% endblock %}
+
+{% block content %}
+
+<section class="markets-page" data-markets-page>
+
+    <!-- =====================================================
+         PAGE HERO
+         ===================================================== -->
+
+    <section class="markets-hero">
+
+        <div class="container">
+
+            <div class="markets-hero-content">
+
+                <span class="section-eyebrow">
+                    NEPAL MARKET NETWORK
+                </span>
+
+                <h1>
+                    Agricultural
+                    <span>Markets</span>
+                </h1>
+
+                <p>
+                    Explore agricultural markets across Nepal and
+                    access their latest available commodity prices.
+                </p>
+
+            </div>
+
+            <div class="markets-summary">
+
+                <div class="markets-summary-item">
+
+                    <span class="summary-label">
+                        ACTIVE MARKETS
+                    </span>
+
+                    <strong data-market-count>
+                        —
+                    </strong>
+
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="markets-summary-item">
+
+                    <span class="summary-label">
+                        DATA NETWORK
+                    </span>
+
+                    <strong>
+                        LIVE
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MARKET DIRECTORY
+         ===================================================== -->
+
+    <section class="markets-directory">
+
+        <div class="container">
+
+            <div class="directory-header">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        MARKET DIRECTORY
+                    </span>
+
+                    <h2>
+                        Markets across Nepal
+                    </h2>
+
+                </div>
+
+                <div class="market-search">
+
+                    <span class="market-search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        placeholder="Search markets..."
+                        data-market-search
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOADING
+                 ================================================= -->
+
+            <div
+                class="markets-loading"
+                data-markets-loading
+            >
+
+                <div class="loading-spinner"></div>
+
+                <span>
+                    Loading market network...
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 ERROR
+                 ================================================= -->
+
+            <div
+                class="markets-error"
+                data-markets-error
+            >
+
+                <strong>
+                    Unable to load markets
+                </strong>
+
+                <p>
+                    Please refresh the page and try again.
+                </p>
+
+                <button
+                    type="button"
+                    data-market-retry
+                >
+                    Retry
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 MARKET GRID
+                 ================================================= -->
+
+            <div
+                class="market-grid"
+                data-market-grid
+            ></div>
+
+
+            <!-- =================================================
+                 EMPTY
+                 ================================================= -->
+
+            <div
+                class="markets-empty"
+                data-markets-empty
+            >
+
+                <div class="empty-icon">
+                    ◌
+                </div>
+
+                <h3>
+                    No markets found
+                </h3>
+
+                <p>
+                    Try searching with another market name,
+                    province, or district.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MARKET DETAIL DRAWER
+         ===================================================== -->
+
+    <div
+        class="market-overlay"
+        data-market-overlay
+    ></div>
+
+
+    <aside
+        class="market-drawer"
+        data-market-drawer
+        aria-hidden="true"
+    >
+
+        <div class="drawer-header">
+
+            <div>
+
+                <span class="drawer-eyebrow">
+                    MARKET DETAILS
+                </span>
+
+                <h2 data-drawer-market-name>
+                    Market
+                </h2>
+
+                <p data-drawer-location>
+                    —
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="drawer-close"
+                data-market-close
+                aria-label="Close market details"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             MARKET META
+             ================================================= -->
+
+        <div class="drawer-meta">
+
+            <div class="drawer-meta-item">
+
+                <span>
+                    Province
+                </span>
+
+                <strong data-drawer-province>
+                    —
+                </strong>
+
+            </div>
+
+            <div class="drawer-meta-item">
+
+                <span>
+                    District
+                </span>
+
+                <strong data-drawer-district>
+                    —
+                </strong>
+
+            </div>
+
+            <div class="drawer-meta-item">
+
+                <span>
+                    Commodities
+                </span>
+
+                <strong data-drawer-price-count>
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LATEST PRICES
+             ================================================= -->
+
+        <div class="drawer-section">
+
+            <div class="drawer-section-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        LATEST PRICES
+                    </span>
+
+                    <h3>
+                        Market prices
+                    </h3>
+
+                </div>
+
+                <span
+                    class="drawer-live"
+                    data-drawer-status
+                >
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <!-- Drawer Loading -->
+
+            <div
+                class="drawer-loading"
+                data-drawer-loading
+            >
+
+                <div class="loading-spinner"></div>
+
+                <span>
+                    Loading prices...
+                </span>
+
+            </div>
+
+
+            <!-- Drawer Error -->
+
+            <div
+                class="drawer-error"
+                data-drawer-error
+            >
+                Unable to load market prices.
+            </div>
+
+
+            <!-- Drawer Prices -->
+
+            <div
+                class="drawer-prices"
+                data-drawer-prices
+            ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             SOURCE
+             ================================================= -->
+
+        <div class="drawer-footer">
+
+            <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-drawer-source
+            >
+                View source
+                <span>↗</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+(() => {
+
+    "use strict";
+
+
+    /* =====================================================
+       STATE
+       ===================================================== */
+
+    let markets = [];
+
+    let activeMarket = null;
+
+
+    /* =====================================================
+       PAGE ELEMENTS
+       ===================================================== */
+
+    const grid =
+        document.querySelector(
+            "[data-market-grid]"
+        );
+
+    const searchInput =
+        document.querySelector(
+            "[data-market-search]"
+        );
+
+    const loading =
+        document.querySelector(
+            "[data-markets-loading]"
+        );
+
+    const error =
+        document.querySelector(
+            "[data-markets-error]"
+        );
+
+    const empty =
+        document.querySelector(
+            "[data-markets-empty]"
+        );
+
+    const count =
+        document.querySelector(
+            "[data-market-count]"
+        );
+
+    const retry =
+        document.querySelector(
+            "[data-market-retry]"
+        );
+
+    const overlay =
+        document.querySelector(
+            "[data-market-overlay]"
+        );
+
+    const drawer =
+        document.querySelector(
+            "[data-market-drawer]"
+        );
+
+    const closeButton =
+        document.querySelector(
+            "[data-market-close]"
+        );
+
+
+    /* =====================================================
+       DRAWER ELEMENTS
+       ===================================================== */
+
+    const drawerName =
+        document.querySelector(
+            "[data-drawer-market-name]"
+        );
+
+    const drawerLocation =
+        document.querySelector(
+            "[data-drawer-location]"
+        );
+
+    const drawerProvince =
+        document.querySelector(
+            "[data-drawer-province]"
+        );
+
+    const drawerDistrict =
+        document.querySelector(
+            "[data-drawer-district]"
+        );
+
+    const drawerPriceCount =
+        document.querySelector(
+            "[data-drawer-price-count]"
+        );
+
+    const drawerPrices =
+        document.querySelector(
+            "[data-drawer-prices]"
+        );
+
+    const drawerLoading =
+        document.querySelector(
+            "[data-drawer-loading]"
+        );
+
+    const drawerError =
+        document.querySelector(
+            "[data-drawer-error]"
+        );
+
+    const drawerSource =
+        document.querySelector(
+            "[data-drawer-source]"
+        );
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    function formatNumber(value) {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return "—";
+        }
+
+        const number =
+            Number(value);
+
+        if (
+            Number.isNaN(number)
+        ) {
+            return escapeHtml(value);
+        }
+
+        return new Intl.NumberFormat(
+            "en-IN",
+            {
+                maximumFractionDigits: 2
+            }
+        ).format(number);
+    }
+
+
+    function formatPrice(value) {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return "—";
+        }
+
+        return `
+            रु. ${formatNumber(value)}
+        `;
+    }
+
+
+    /* =====================================================
+       PAGE STATES
+       ===================================================== */
+
+    function setLoading(isLoading) {
+
+        if (isLoading) {
+
+            loading.style.display =
+                "flex";
+
+            error.style.display =
+                "none";
+
+            empty.style.display =
+                "none";
+
+            grid.style.display =
+                "none";
+
+            grid.innerHTML = "";
+
+        } else {
+
+            loading.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    function showError() {
+
+        loading.style.display =
+            "none";
+
+        error.style.display =
+            "flex";
+
+        empty.style.display =
+            "none";
+
+        grid.style.display =
+            "none";
+
+    }
+
+
+    function hideError() {
+
+        error.style.display =
+            "none";
+
+    }
+
+
+    /* =====================================================
+       LOAD MARKETS
+       ===================================================== */
+
+    async function loadMarkets() {
+
+        setLoading(true);
+        hideError();
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/markets",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Market request failed: ${response.status}`
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data ||
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Unable to load markets."
+                );
+
+            }
+
+
+            markets =
+                Array.isArray(
+                    data.markets
+                )
+                    ? data.markets
+                    : [];
+
+
+            count.textContent =
+                formatNumber(
+                    markets.length
+                );
+
+
+            renderMarkets(
+                markets
+            );
+
+
+        } catch (err) {
+
+            console.error(
+                "KrishiRate markets error:",
+                err
+            );
+
+            showError();
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RENDER MARKET GRID
+       ===================================================== */
+
+    function renderMarkets(items) {
+
+        grid.innerHTML =
+            "";
+
+
+        if (!items.length) {
+
+            grid.style.display =
+                "none";
+
+            empty.style.display =
+                "flex";
+
+            return;
+
+        }
+
+
+        grid.style.display =
+            "grid";
+
+        empty.style.display =
+            "none";
+
+
+        items.forEach(
+            (market, index) => {
+
+                grid.appendChild(
+                    createMarketCard(
+                        market,
+                        index
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MARKET CARD
+       ===================================================== */
+
+    function createMarketCard(
+        market,
+        index
+    ) {
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+
+        card.className =
+            "market-card";
+
+
+        card.style.setProperty(
+            "--card-index",
+            index
+        );
+
+
+        const location =
+            market.district ||
+            market.location ||
+            market.province ||
+            "Nepal";
+
+
+        const province =
+            market.province ||
+            "Nepal";
+
+
+        card.innerHTML = `
+
+            <div class="market-card-top">
+
+                <div class="market-number">
+                    ${String(
+                        index + 1
+                    ).padStart(2, "0")}
+                </div>
+
+                <span class="market-status">
+
+                    <span></span>
+
+                    ACTIVE
+
+                </span>
+
+            </div>
+
+
+            <div class="market-card-body">
+
+                <span class="market-card-label">
+                    AGRICULTURAL MARKET
+                </span>
+
+                <h3>
+                    ${escapeHtml(
+                        market.name ||
+                        "Unnamed Market"
+                    )}
+                </h3>
+
+                <p class="market-location">
+
+                    <span>
+                        ⌖
+                    </span>
+
+                    ${escapeHtml(
+                        location
+                    )}
+
+                </p>
+
+            </div>
+
+
+            <div class="market-card-bottom">
+
+                <div class="market-region">
+
+                    <span>
+                        PROVINCE
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            province
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="market-view-button"
+                    data-market-id="${market.id}"
+                >
+
+                    View prices
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        const button =
+            card.querySelector(
+                "[data-market-id]"
+            );
+
+
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                openMarket(
+                    market
+                );
+
+            }
+        );
+
+
+        return card;
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    function filterMarkets(query) {
+
+        const normalized =
+            query
+                .trim()
+                .toLowerCase();
+
+
+        if (!normalized) {
+
+            renderMarkets(
+                markets
+            );
+
+            return;
+
+        }
+
+
+        const filtered =
+            markets.filter(
+                market => {
+
+                    const searchable = [
+
+                        market.name,
+
+                        market.nepali_name,
+
+                        market.province,
+
+                        market.district,
+
+                        market.municipality,
+
+                        market.location
+
+                    ]
+                        .filter(Boolean)
+                        .join(" ")
+                        .toLowerCase();
+
+
+                    return searchable.includes(
+                        normalized
+                    );
+
+                }
+            );
+
+
+        renderMarkets(
+            filtered
+        );
+
+    }
+
+
+    /* =====================================================
+       OPEN MARKET DRAWER
+       ===================================================== */
+
+    async function openMarket(
+        market
+    ) {
+
+        activeMarket =
+            market;
+
+
+        drawerName.textContent =
+            market.name ||
+            "Market";
+
+
+        drawerLocation.textContent =
+            market.location ||
+            market.district ||
+            market.province ||
+            "Nepal";
+
+
+        drawerProvince.textContent =
+            market.province ||
+            "—";
+
+
+        drawerDistrict.textContent =
+            market.district ||
+            "—";
+
+
+        drawerPriceCount.textContent =
+            "—";
+
+
+        drawerPrices.innerHTML =
+            "";
+
+
+        drawerError.style.display =
+            "none";
+
+
+        drawerLoading.style.display =
+            "flex";
+
+
+        drawerSource.href =
+            market.price_url ||
+            market.market_url ||
+            "#";
+
+
+        /* Open overlay */
+
+        overlay.style.display =
+            "block";
+
+
+        requestAnimationFrame(
+            () => {
+
+                drawer.classList.add(
+                    "is-open"
+                );
+
+                drawer.setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+                overlay.classList.add(
+                    "is-visible"
+                );
+
+            }
+        );
+
+
+        document.body.classList.add(
+            "drawer-open"
+        );
+
+
+        await loadMarketPrices(
+            market.id
+        );
+
+    }
+
+
+    /* =====================================================
+       LOAD MARKET PRICES
+       ===================================================== */
+
+    async function loadMarketPrices(
+        marketId
+    ) {
+
+        drawerLoading.style.display =
+            "flex";
+
+        drawerError.style.display =
+            "none";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/markets/${marketId}/prices`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Price request failed: ${response.status}`
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data ||
+                data.success === false
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Unable to load prices."
+                );
+
+            }
+
+
+            const prices =
+                Array.isArray(
+                    data.prices
+                )
+                    ? data.prices
+                    : [];
+
+
+            drawerPriceCount.textContent =
+                formatNumber(
+                    prices.length
+                );
+
+
+            renderMarketPrices(
+                prices
+            );
+
+
+        } catch (err) {
+
+            console.error(
+                "KrishiRate market price error:",
+                err
+            );
+
+
+            drawerError.textContent =
+                err.message ||
+                "Unable to load market prices.";
+
+
+            drawerError.style.display =
+                "block";
+
+
+        } finally {
+
+            /*
+             * IMPORTANT:
+             * Always hide the loading state after
+             * the API request finishes.
+             */
+
+            drawerLoading.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RENDER MARKET PRICES
+       ===================================================== */
+
+    function renderMarketPrices(
+        prices
+    ) {
+
+        drawerPrices.innerHTML =
+            "";
+
+
+        if (!prices.length) {
+
+            drawerPrices.innerHTML = `
+
+                <div class="drawer-empty">
+
+                    <div>
+                        ◌
+                    </div>
+
+                    <strong>
+                        No current prices
+                    </strong>
+
+                    <p>
+                        This market currently has
+                        no available price records.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        prices.forEach(
+            price => {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "drawer-price-row";
+
+
+                const product =
+                    price.product ||
+                    price.nepali_name ||
+                    price.english_name ||
+                    "Unknown product";
+
+
+                row.innerHTML = `
+
+                    <div class="drawer-product">
+
+                        <strong>
+                            ${escapeHtml(
+                                product
+                            )}
+                        </strong>
+
+                        <span>
+                            ${escapeHtml(
+                                price.unit ||
+                                "—"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="drawer-price-values">
+
+                        <div>
+
+                            <span>
+                                MIN
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    price.minimum
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="drawer-average">
+
+                            <span>
+                                AVG
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    price.average
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                MAX
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    price.maximum
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                drawerPrices.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CLOSE MARKET DRAWER
+       ===================================================== */
+
+    function closeMarket() {
+
+        drawer.classList.remove(
+            "is-open"
+        );
+
+
+        drawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        overlay.classList.remove(
+            "is-visible"
+        );
+
+
+        document.body.classList.remove(
+            "drawer-open"
+        );
+
+
+        setTimeout(
+            () => {
+
+                if (
+                    !drawer.classList.contains(
+                        "is-open"
+                    )
+                ) {
+
+                    overlay.style.display =
+                        "none";
+
+                }
+
+            },
+            250
+        );
+
+
+        activeMarket =
+            null;
+
+    }
+
+
+    /* =====================================================
+       EVENTS
+       ===================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        event => {
+
+            filterMarkets(
+                event.target.value
+            );
+
+        }
+    );
+
+
+    retry.addEventListener(
+        "click",
+        loadMarkets
+    );
+
+
+    closeButton.addEventListener(
+        "click",
+        closeMarket
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        closeMarket
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" &&
+                activeMarket
+            ) {
+
+                closeMarket();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIALIZE
+       ===================================================== */
+
+    loadMarkets();
+
+})();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+python-dotenv
+psycopg[binary]
+requests
+beautifulsoup4
+lxml
+APScheduler
+bikram-sambat

@@ -1,0 +1,1539 @@
+{% extends "base.html" %}
+
+{% block title %}
+    KrishiRate — Agricultural Products
+{% endblock %}
+
+{% block content %}
+
+<section class="products-page" data-products-page>
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="products-hero">
+
+        <div class="container">
+
+            <div class="products-hero-content">
+
+                <span class="section-eyebrow">
+                    AGRICULTURAL PRODUCT INTELLIGENCE
+                </span>
+
+                <h1>
+                    Explore
+                    <span>Products</span>
+                </h1>
+
+                <p>
+                    Search Nepal's agricultural commodity catalog
+                    and explore the latest available market prices.
+                </p>
+
+            </div>
+
+            <div class="products-search">
+
+                <span class="products-search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Search tomatoes, rice, potato..."
+                    autocomplete="off"
+                    data-product-search
+                >
+
+                <button
+                    type="button"
+                    data-product-clear
+                    hidden
+                >
+                    Clear
+                </button>
+
+            </div>
+
+            <div class="products-search-hint">
+                Search by product name, Nepali name,
+                English name, or commodity code.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DIRECTORY
+         ===================================================== -->
+
+    <section class="products-directory">
+
+        <div class="container">
+
+            <div class="products-directory-header">
+
+                <div>
+                    <span class="section-eyebrow">
+                        PRODUCT DIRECTORY
+                    </span>
+
+                    <h2>
+                        Agricultural commodities
+                    </h2>
+                </div>
+
+                <div class="products-count">
+
+                    <span>
+                        RESULTS
+                    </span>
+
+                    <strong data-product-count>
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Loading -->
+
+            <div
+                class="products-loading"
+                data-products-loading
+            >
+                <div class="loading-spinner"></div>
+
+                <span>
+                    Loading agricultural products...
+                </span>
+            </div>
+
+
+            <!-- Error -->
+
+            <div
+                class="products-error"
+                data-products-error
+                hidden
+            >
+                <strong>
+                    Unable to load products
+                </strong>
+
+                <p>
+                    Please refresh the page and try again.
+                </p>
+
+                <button
+                    type="button"
+                    data-product-retry
+                >
+                    Retry
+                </button>
+            </div>
+
+
+            <!-- Product grid -->
+
+            <div
+                class="product-grid"
+                data-product-grid
+            ></div>
+
+
+            <!-- Empty -->
+
+            <div
+                class="products-empty"
+                data-products-empty
+                hidden
+            >
+                <div class="empty-icon">
+                    ◌
+                </div>
+
+                <h3>
+                    No products found
+                </h3>
+
+                <p>
+                    Try another product name,
+                    Nepali name, or commodity code.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         OVERLAY
+         ===================================================== -->
+
+    <div
+        class="product-overlay"
+        data-product-overlay
+        hidden
+    ></div>
+
+
+    <!-- =====================================================
+         PRODUCT DRAWER
+         ===================================================== -->
+
+    <aside
+        class="product-drawer"
+        data-product-drawer
+        aria-hidden="true"
+    >
+
+        <div class="product-drawer-header">
+
+            <div>
+
+                <span class="drawer-eyebrow">
+                    PRODUCT DETAILS
+                </span>
+
+                <h2 data-drawer-product-name>
+                    Product
+                </h2>
+
+                <p data-drawer-product-secondary>
+                    —
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="drawer-close"
+                data-product-close
+                aria-label="Close product details"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- Product metadata -->
+
+        <div class="product-meta">
+
+            <div class="product-meta-item">
+                <span>CATEGORY</span>
+
+                <strong data-drawer-category>
+                    —
+                </strong>
+            </div>
+
+            <div class="product-meta-item">
+                <span>SUBCATEGORY</span>
+
+                <strong data-drawer-subcategory>
+                    —
+                </strong>
+            </div>
+
+            <div class="product-meta-item">
+                <span>UNIT</span>
+
+                <strong data-drawer-unit>
+                    —
+                </strong>
+            </div>
+
+            <div class="product-meta-item">
+                <span>MARKETS</span>
+
+                <strong data-drawer-markets>
+                    —
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- Current range -->
+
+        <div class="product-detail-section">
+
+            <div class="product-detail-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        CURRENT MARKET RANGE
+                    </span>
+
+                    <h3>
+                        Latest prices
+                    </h3>
+
+                </div>
+
+                <span
+                    class="drawer-live"
+                    data-drawer-status
+                >
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <div class="product-price-summary">
+
+                <div class="product-price-box">
+
+                    <span>
+                        MINIMUM
+                    </span>
+
+                    <strong data-product-min>
+                        —
+                    </strong>
+
+                </div>
+
+                <div class="product-price-box product-price-box-main">
+
+                    <span>
+                        AVERAGE
+                    </span>
+
+                    <strong data-product-average>
+                        —
+                    </strong>
+
+                </div>
+
+                <div class="product-price-box">
+
+                    <span>
+                        MAXIMUM
+                    </span>
+
+                    <strong data-product-max>
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Market breakdown -->
+
+        <div class="product-detail-section">
+
+            <div class="product-detail-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        MARKET BREAKDOWN
+                    </span>
+
+                    <h3>
+                        Prices by market
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <div
+                class="product-market-prices"
+                data-product-market-prices
+            >
+                <div class="product-detail-loading">
+
+                    <div class="loading-spinner"></div>
+
+                    <span>
+                        Loading market prices...
+                    </span>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Source -->
+
+        <div class="product-drawer-footer">
+
+            <div class="product-source-info">
+
+                <span>
+                    DATA SOURCE
+                </span>
+
+                <strong data-drawer-source-name>
+                    —
+                </strong>
+
+            </div>
+
+            <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-drawer-source
+            >
+                View source
+                <span>↗</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+(() => {
+
+    "use strict";
+
+
+    /* =====================================================
+       STATE
+       ===================================================== */
+
+    let products = [];
+    let activeProduct = null;
+    let searchTimer = null;
+
+
+    /* =====================================================
+       DOM
+       ===================================================== */
+
+    const searchInput =
+        document.querySelector(
+            "[data-product-search]"
+        );
+
+    const clearButton =
+        document.querySelector(
+            "[data-product-clear]"
+        );
+
+    const grid =
+        document.querySelector(
+            "[data-product-grid]"
+        );
+
+    const loading =
+        document.querySelector(
+            "[data-products-loading]"
+        );
+
+    const error =
+        document.querySelector(
+            "[data-products-error]"
+        );
+
+    const empty =
+        document.querySelector(
+            "[data-products-empty]"
+        );
+
+    const count =
+        document.querySelector(
+            "[data-product-count]"
+        );
+
+    const retry =
+        document.querySelector(
+            "[data-product-retry]"
+        );
+
+    const overlay =
+        document.querySelector(
+            "[data-product-overlay]"
+        );
+
+    const drawer =
+        document.querySelector(
+            "[data-product-drawer]"
+        );
+
+    const closeButton =
+        document.querySelector(
+            "[data-product-close]"
+        );
+
+
+    const drawerName =
+        document.querySelector(
+            "[data-drawer-product-name]"
+        );
+
+    const drawerSecondary =
+        document.querySelector(
+            "[data-drawer-product-secondary]"
+        );
+
+    const drawerCategory =
+        document.querySelector(
+            "[data-drawer-category]"
+        );
+
+    const drawerSubcategory =
+        document.querySelector(
+            "[data-drawer-subcategory]"
+        );
+
+    const drawerUnit =
+        document.querySelector(
+            "[data-drawer-unit]"
+        );
+
+    const drawerMarkets =
+        document.querySelector(
+            "[data-drawer-markets]"
+        );
+
+    const drawerMin =
+        document.querySelector(
+            "[data-product-min]"
+        );
+
+    const drawerAverage =
+        document.querySelector(
+            "[data-product-average]"
+        );
+
+    const drawerMax =
+        document.querySelector(
+            "[data-product-max]"
+        );
+
+    const drawerMarketPrices =
+        document.querySelector(
+            "[data-product-market-prices]"
+        );
+
+    const drawerSourceName =
+        document.querySelector(
+            "[data-drawer-source-name]"
+        );
+
+    const drawerSource =
+        document.querySelector(
+            "[data-drawer-source]"
+        );
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return "";
+        }
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    function formatNumber(value) {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return "—";
+        }
+
+        const number = Number(value);
+
+        if (Number.isNaN(number)) {
+            return value;
+        }
+
+        return new Intl.NumberFormat(
+            "en-IN",
+            {
+                maximumFractionDigits: 2
+            }
+        ).format(number);
+    }
+
+
+    function formatPrice(
+        value,
+        unit = ""
+    ) {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return "—";
+        }
+
+        const formatted =
+            formatNumber(value);
+
+        return unit
+            ? `रु. ${formatted} / ${unit}`
+            : `रु. ${formatted}`;
+    }
+
+
+    /* =====================================================
+       LOAD PRODUCT CATALOG
+       ===================================================== */
+
+    async function loadProducts(
+        query = ""
+    ) {
+
+        setLoading(true);
+        hideError();
+
+        try {
+
+            let url =
+                "/api/products/search";
+
+            const normalized =
+                query.trim();
+
+            if (normalized) {
+
+                url +=
+                    `?q=${encodeURIComponent(
+                        normalized
+                    )}`;
+            }
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Product request failed: ${response.status}`
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to load products."
+                );
+            }
+
+
+            products =
+                data.products || [];
+
+
+            count.textContent =
+                formatNumber(
+                    products.length
+                );
+
+
+            renderProducts(
+                products
+            );
+
+
+        } catch (err) {
+
+            console.error(
+                "KrishiRate products error:",
+                err
+            );
+
+            showError();
+
+        } finally {
+
+            setLoading(false);
+        }
+    }
+
+
+    /* =====================================================
+       RENDER PRODUCT CARDS
+       ===================================================== */
+        function renderProducts(items) {
+
+        grid.innerHTML = "";
+
+        // ALWAYS hide loading once products have been received
+        loading.style.display = "none";
+        loading.setAttribute("hidden", "");
+
+        error.style.display = "none";
+        error.setAttribute("hidden", "");
+
+        if (!items || items.length === 0) {
+
+         grid.style.display = "none";
+
+            empty.style.display = "flex";
+         empty.removeAttribute("hidden");
+
+         return;
+        }
+
+        empty.style.display = "none";
+        empty.setAttribute("hidden", "");
+
+     grid.style.display = "grid";
+
+      items.forEach(
+        (product, index) => {
+
+            grid.appendChild(
+                createProductCard(
+                    product,
+                    index
+                )
+            );
+
+        }
+    );
+}
+
+
+    function createProductCard(
+        product,
+        index
+    ) {
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+
+        card.className =
+            "product-card";
+
+
+        card.style.setProperty(
+            "--card-index",
+            index
+        );
+
+
+        const secondary =
+            product.english_name ||
+            product.nepali_name ||
+            "Agricultural commodity";
+
+
+        card.innerHTML = `
+
+            <div class="product-card-top">
+
+                <div class="product-number">
+                    ${String(
+                        index + 1
+                    ).padStart(2, "0")}
+                </div>
+
+                <span class="product-status">
+
+                    <span></span>
+
+                    ACTIVE
+
+                </span>
+
+            </div>
+
+
+            <div class="product-card-body">
+
+                <span class="product-card-label">
+                    AGRICULTURAL COMMODITY
+                </span>
+
+                <h3>
+                    ${escapeHtml(
+                        product.name ||
+                        "Unnamed product"
+                    )}
+                </h3>
+
+                <p class="product-secondary">
+                    ${escapeHtml(
+                        secondary
+                    )}
+                </p>
+
+            </div>
+
+
+            <div class="product-card-bottom">
+
+                <div class="product-card-meta">
+
+                    <span>
+                        ${escapeHtml(
+                            product.category ||
+                            "GENERAL"
+                        )}
+                    </span>
+
+                    ${
+                        product.source_code
+                            ? `
+                                <strong>
+                                    ${escapeHtml(
+                                        product.source_code
+                                    )}
+                                </strong>
+                              `
+                            : ""
+                    }
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="product-view-button"
+                >
+                    View prices
+                    <span>→</span>
+                </button>
+
+            </div>
+        `;
+
+
+        card
+            .querySelector(
+                ".product-view-button"
+            )
+            .addEventListener(
+                "click",
+                () => openProduct(product)
+            );
+
+
+        return card;
+    }
+
+
+    /* =====================================================
+       OPEN PRODUCT
+       ===================================================== */
+
+    async function openProduct(
+        product
+    ) {
+
+        activeProduct =
+            product;
+
+
+        drawerName.textContent =
+            product.name ||
+            "Product";
+
+
+        drawerSecondary.textContent =
+            product.english_name ||
+            product.nepali_name ||
+            product.category ||
+            "Agricultural commodity";
+
+
+        drawerCategory.textContent =
+            product.category ||
+            "—";
+
+
+        drawerSubcategory.textContent =
+            product.subcategory ||
+            "—";
+
+
+        drawerUnit.textContent =
+            product.unit ||
+            "—";
+
+
+        drawerMarkets.textContent =
+            "Loading...";
+
+
+        drawerMin.textContent =
+            "—";
+
+
+        drawerAverage.textContent =
+            "—";
+
+
+        drawerMax.textContent =
+            "—";
+
+
+        drawerSourceName.textContent =
+            "Loading...";
+
+
+        drawerSource.href =
+            "#";
+
+
+        drawerMarketPrices.innerHTML = `
+
+            <div class="product-detail-loading">
+
+                <div class="loading-spinner"></div>
+
+                <span>
+                    Loading market prices...
+                </span>
+
+            </div>
+
+        `;
+
+
+        overlay.hidden =
+            false;
+
+
+        requestAnimationFrame(
+            () => {
+
+                drawer.classList.add(
+                    "is-open"
+                );
+
+                drawer.setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+                overlay.classList.add(
+                    "is-visible"
+                );
+
+            }
+        );
+
+
+        document.body.classList.add(
+            "drawer-open"
+        );
+
+
+        await loadProductDetails(
+            product.id
+        );
+    }
+
+
+    /* =====================================================
+       LOAD PRODUCT DETAILS
+       ===================================================== */
+
+    async function loadProductDetails(
+        productId
+    ) {
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/products/${productId}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Product detail request failed: ${response.status}`
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to load product details."
+                );
+            }
+
+
+            renderProductDetails(
+                data
+            );
+
+
+        } catch (err) {
+
+            console.error(
+                "KrishiRate product detail error:",
+                err
+            );
+
+
+            drawerMarketPrices.innerHTML = `
+
+                <div class="product-detail-error">
+
+                    Unable to load current
+                    product prices.
+
+                </div>
+
+            `;
+        }
+    }
+
+
+    /* =====================================================
+       RENDER PRODUCT DETAILS
+       ===================================================== */
+
+    function renderProductDetails(
+        data
+    ) {
+
+        const product =
+            data.product || {};
+
+        const statistics =
+            data.statistics || {};
+
+        const markets =
+            data.markets || [];
+
+
+        const unit =
+            statistics.unit ||
+            product.unit ||
+            "";
+
+
+        drawerName.textContent =
+            product.name ||
+            "Product";
+
+
+        drawerSecondary.textContent =
+            product.english_name ||
+            product.nepali_name ||
+            product.category ||
+            "Agricultural commodity";
+
+
+        drawerCategory.textContent =
+            product.category ||
+            "—";
+
+
+        drawerSubcategory.textContent =
+            product.subcategory ||
+            "—";
+
+
+        drawerUnit.textContent =
+            unit ||
+            "—";
+
+
+        drawerMarkets.textContent =
+            formatNumber(
+                statistics.market_count ||
+                markets.length
+            );
+
+
+        drawerMin.textContent =
+            formatPrice(
+                statistics.minimum_price,
+                unit
+            );
+
+
+        drawerAverage.textContent =
+            formatPrice(
+                statistics.average_price,
+                unit
+            );
+
+
+        drawerMax.textContent =
+            formatPrice(
+                statistics.maximum_price,
+                unit
+            );
+
+
+        if (markets.length) {
+
+            const firstMarket =
+                markets[0];
+
+
+            drawerSourceName.textContent =
+                firstMarket.source ||
+                "Agriculture source";
+
+
+            drawerSource.href =
+                firstMarket.source_url ||
+                firstMarket.source_reference ||
+                "#";
+
+        } else {
+
+            drawerSourceName.textContent =
+                "Source attributed";
+
+            drawerSource.href =
+                "#";
+        }
+
+
+        renderMarketPrices(
+            markets,
+            unit
+        );
+    }
+
+
+    /* =====================================================
+       MARKET PRICE LIST
+       ===================================================== */
+
+    function renderMarketPrices(
+        markets,
+        unit
+    ) {
+
+        drawerMarketPrices.innerHTML =
+            "";
+
+
+        if (!markets.length) {
+
+            drawerMarketPrices.innerHTML = `
+
+                <div class="product-detail-empty">
+
+                    <div>
+                        ◌
+                    </div>
+
+                    <strong>
+                        No current market prices
+                    </strong>
+
+                    <p>
+                        No latest market price
+                        records are available
+                        for this product.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        markets.forEach(
+            market => {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "product-market-row";
+
+
+                row.innerHTML = `
+
+                    <div class="product-market-name">
+
+                        <strong>
+                            ${escapeHtml(
+                                market.market ||
+                                "Unknown market"
+                            )}
+                        </strong>
+
+                        <span>
+                            ${escapeHtml(
+                                market.district ||
+                                market.province ||
+                                ""
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="product-market-values">
+
+                        <div>
+
+                            <span>
+                                MIN
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    market.minimum,
+                                    market.unit ||
+                                    unit
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="product-market-average">
+
+                            <span>
+                                AVG
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    market.average,
+                                    market.unit ||
+                                    unit
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                MAX
+                            </span>
+
+                            <strong>
+                                ${formatPrice(
+                                    market.maximum,
+                                    market.unit ||
+                                    unit
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="product-market-date">
+
+                        <span>
+                            ${escapeHtml(
+                                market.freshness ||
+                                ""
+                            )}
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(
+                                market.price_date ||
+                                ""
+                            )}
+                        </strong>
+
+                    </div>
+
+                `;
+
+
+                drawerMarketPrices.appendChild(
+                    row
+                );
+            }
+        );
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    function handleSearch(
+        value
+    ) {
+
+        clearButton.hidden =
+            !value.trim();
+
+
+        clearTimeout(
+            searchTimer
+        );
+
+
+        searchTimer =
+            setTimeout(
+                () => {
+
+                    loadProducts(
+                        value
+                    );
+
+                },
+                280
+            );
+    }
+
+
+    function clearSearch() {
+
+        searchInput.value =
+            "";
+
+        clearButton.hidden =
+            true;
+
+        loadProducts();
+    }
+
+
+    /* =====================================================
+       CLOSE DRAWER
+       ===================================================== */
+
+    function closeProduct() {
+
+        drawer.classList.remove(
+            "is-open"
+        );
+
+        drawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        overlay.classList.remove(
+            "is-visible"
+        );
+
+        document.body.classList.remove(
+            "drawer-open"
+        );
+
+
+        setTimeout(
+            () => {
+
+                overlay.hidden =
+                    true;
+
+            },
+            220
+        );
+
+
+        activeProduct =
+            null;
+    }
+
+
+    /* =====================================================
+       UI STATES
+       ===================================================== */
+
+    function setLoading(state) {
+
+    if (state) {
+
+        loading.style.display = "flex";
+        loading.removeAttribute("hidden");
+
+        error.style.display = "none";
+        error.setAttribute("hidden", "");
+
+        grid.style.display = "none";
+        empty.style.display = "none";
+
+        return;
+    }
+
+    // Loading finished
+    loading.style.display = "none";
+    loading.setAttribute("hidden", "");
+
+}
+
+
+    function showError() {
+
+    loading.style.display = "none";
+    loading.setAttribute("hidden", "");
+
+    grid.style.display = "none";
+
+    empty.style.display = "none";
+    empty.setAttribute("hidden", "");
+
+    error.style.display = "flex";
+    error.removeAttribute("hidden");
+}
+
+
+function hideError() {
+
+    error.style.display = "none";
+    error.setAttribute("hidden", "");
+
+}
+
+
+    /* =====================================================
+       EVENTS
+       ===================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        event => {
+
+            handleSearch(
+                event.target.value
+            );
+
+        }
+    );
+
+
+    clearButton.addEventListener(
+        "click",
+        clearSearch
+    );
+
+
+    retry.addEventListener(
+        "click",
+        () => {
+
+            loadProducts(
+                searchInput.value
+            );
+
+        }
+    );
+
+
+    closeButton.addEventListener(
+        "click",
+        closeProduct
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        closeProduct
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" &&
+                activeProduct
+            ) {
+
+                closeProduct();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL LOAD
+       ===================================================== */
+
+    loadProducts();
+
+})();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="KrishiRate — Nepal Agriculture Price Intelligence Platform"
+    >
+
+    <meta name="theme-color" content="#0b1f17">
+
+    <title>
+        {% block title %}
+            KrishiRate
+        {% endblock %}
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <header class="site-header">
+
+            <div class="container nav-container">
+
+                <!-- BRAND -->
+
+                <a href="/" class="brand" aria-label="KrishiRate Home">
+
+    <img
+        src="{{ url_for('static', filename='images/krishirate-logo.png') }}"
+        alt="KrishiRate logo"
+        class="brand-logo"
+    >
+
+    <span class="brand-text">
+        <span class="brand-name">KrishiRate</span>
+        <span class="brand-tagline">Nepal Agriculture Intelligence</span>
+    </span>
+
+</a>
+
+
+                <!-- NAVIGATION -->
+
+                <nav
+                    class="main-nav"
+                    aria-label="Main navigation"
+                >
+
+                    <a
+                        href="/"
+                        class="nav-link {% if request.path == '/' %}active{% endif %}"
+                    >
+                        Dashboard
+                    </a>
+
+                    <a
+                        href="/markets"
+                        class="nav-link {% if request.path.startswith('/markets') %}active{% endif %}"
+                    >
+                        Markets
+                    </a>
+
+                    <a
+                        href="/products"
+                        class="nav-link {% if request.path.startswith('/products') %}active{% endif %}"
+                    >
+                        Products
+                    </a>
+
+                    <a
+                        href="/prices"
+                        class="nav-link {% if request.path.startswith('/prices') %}active{% endif %}"
+                    >
+                        Prices
+                    </a>
+
+                </nav>
+
+
+                <!-- LIVE STATUS -->
+
+                <div class="header-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Live Data
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+
+        <main class="main-content">
+
+            {% block content %}{% endblock %}
+
+        </main>
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="site-footer">
+
+            <div class="container footer-container">
+
+                <div class="footer-brand">
+
+                    <div class="footer-logo">
+                        KrishiRate
+                    </div>
+
+                    <p>
+                        Nepal Agriculture Price Intelligence Platform
+                    </p>
+
+                </div>
+
+                <div class="footer-meta">
+
+                    <span>
+                        Data-driven agriculture intelligence
+                    </span>
+
+                    <span class="footer-separator">
+                        •
+                    </span>
+
+                    <span>
+                        Source-attributed
+                    </span>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- GLOBAL JAVASCRIPT -->
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>
