@@ -7,4 +7,5 @@ requests
 beautifulsoup4
 lxml
 APScheduler
-bikram-sambatgunicorn
+bikram-sambat
+gunicorn
